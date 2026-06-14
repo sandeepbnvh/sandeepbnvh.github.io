@@ -27,7 +27,34 @@ export default class main extends Controller {
             if (oTimeline) {
                 oTimeline.setEnableScroll(false);
             }
-            oView.setBusy(false);
+
+            // Create default model
+            const oModel = new JSONModel();
+            oView.setModel(oModel);
+
+            // Fetch from Firebase Realtime Database path 'portfolio'
+            firebase.database().ref("portfolio").once("value").then((snapshot: any) => {
+                const data = snapshot.val();
+                if (data) {
+                    oModel.setData(data);
+                    oView.setBusy(false);
+                } else {
+                    // Seed database with local data.json if it is empty on Firebase
+                    const localModel = new JSONModel();
+                    localModel.attachRequestCompleted(() => {
+                        const localData = localModel.getData();
+                        firebase.database().ref("portfolio").set(localData).then(() => {
+                            oModel.setData(localData);
+                            oView.setBusy(false);
+                        });
+                    });
+                    localModel.loadData(sap.ui.require.toUrl("com/san/portfolio/model/data.json"));
+                }
+            }).catch((error: any) => {
+                console.error("Failed to fetch portfolio data from Firebase, using fallback data.json: ", error);
+                oModel.loadData(sap.ui.require.toUrl("com/san/portfolio/model/data.json"));
+                oView.setBusy(false);
+            });
         }
     }
 
@@ -36,7 +63,8 @@ export default class main extends Controller {
     }
 
     public downloadResume(): void {
-        MessageToast.show("Resume download is currently unavailable.");
+        const sURL = "https://firebasestorage.googleapis.com/v0/b/portfolio-7b056.appspot.com/o/Sandeep%20A%20N_Resume-converted.pdf?alt=media&token=487486a2-3b22-4a31-a675-a6b622422c18";
+        window.open(sURL, "_blank");
     }
 
     public handlePopoverPress(oEvent: any): void {
