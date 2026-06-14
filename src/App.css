@@ -1,0 +1,131 @@
+/* Layout Responsiveness - Sandeep A N Portfolio */
+
+/* Navigation Header */
+.mobile-nav-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav-toggle {
+    display: flex !important;
+  }
+}
+
+/* Hero Layout */
+.hero-layout {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+@media (max-width: 768px) {
+  .hero-layout {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 40px !important;
+  }
+  
+  .hero-layout > div {
+    text-align: center !important;
+    align-items: center !important;
+  }
+  
+  .hero-layout span {
+    align-self: center !important;
+  }
+  
+  .hero-layout div {
+    justify-content: center !important;
+  }
+}
+
+/* Timeline Responsiveness */
+@media (max-width: 600px) {
+  .timeline::before {
+    left: 19px !important;
+  }
+  
+  .timeline-item {
+    padding-left: 45px !important;
+  }
+  
+  .timeline-icon {
+    left: 5px !important;
+  }
+  
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Contact Layout Responsiveness */
+@media (max-width: 768px) {
+  .contact-layout {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+/* Social Buttons Micro-interactions */
+.social-icon-btn {
+  color: var(--text-secondary);
+  transition: all var(--transition-fast) !important;
+}
+
+.social-icon-btn:hover {
+  color: var(--accent) !important;
+  transform: translateY(-3px);
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+/* Contact Form Input Styles */
+input, textarea {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1) !important;
+}
+
+/* Header Links Hover Effects */
+nav ul li a {
+  position: relative;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+nav ul li a:hover {
+  color: var(--accent);
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--accent);
+  transition: width var(--transition-fast);
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+/* Mobile Navigation Drawer Links */
+.mobile-nav-drawer ul li a {
+  color: var(--text-primary);
+  display: block;
+  padding: 8px 0;
+}
+
+.mobile-nav-drawer ul li a:hover {
+  color: var(--accent);
+}
