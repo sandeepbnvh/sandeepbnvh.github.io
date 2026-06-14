@@ -35,10 +35,15 @@ server:
         excludePatterns:
           - /Component-preload.js
 builder:
+  resources:
+    excludes:
+      - "**/*.ts"
+      - "**/*.js.map"
   customTasks:
     - name: ui5-tooling-transpile-task
       afterTask: replaceVersion
       configuration:
-        debug: true
+        debug: false
+        sourceMaps: false
         transformModulesToUI5:
           overridesToOverride: true
