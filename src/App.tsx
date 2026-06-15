@@ -13,6 +13,7 @@ import {
   ChevronRight,
   ChevronDown
 } from 'lucide-react';
+import { GitHubCalendar } from 'react-github-calendar';
 import ThemeToggle from './components/ThemeToggle';
 import AvatarPlaceholder from './components/AvatarPlaceholder';
 import './App.css';
@@ -58,6 +59,24 @@ const GithubIcon = ({ size = 24, ...props }: CustomIconProps) => (
   >
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
     <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const InstagramIcon = ({ size = 24, ...props }: CustomIconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    stroke="currentColor"
+    strokeWidth="2"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
 
@@ -113,6 +132,24 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'sap' | 'web'>('all');
   const [expandedExperience, setExpandedExperience] = useState<number | null>(null);
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
+
+  // MutationObserver to watch theme attribute changes
+  useEffect(() => {
+    const activeTheme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark' || 
+                        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setCurrentTheme(activeTheme);
+
+    const observer = new MutationObserver(() => {
+      const themeAttr = document.documentElement.getAttribute('data-theme') as 'light' | 'dark';
+      if (themeAttr) {
+        setCurrentTheme(themeAttr);
+      }
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
   
   // Form State
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
@@ -502,6 +539,25 @@ export default function App() {
                   <GithubIcon size={18} />
                 </a>
                 <a
+                  href="https://instagram.com/sandeep.a.n"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram Profile"
+                  className="social-icon-btn glass-panel"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'var(--glass-bg)',
+                    border: '1px solid var(--glass-border)',
+                  }}
+                >
+                  <InstagramIcon size={18} />
+                </a>
+                <a
                   href="mailto:sandeep.bnvh@gmail.com"
                   aria-label="Email Sandeep"
                   className="social-icon-btn glass-panel"
@@ -692,6 +748,32 @@ export default function App() {
             ))}
           </RevealSection>
         </div>
+      </section>
+
+      {/* GitHub Contributions Section */}
+      <section id="github-activity" className="section container" style={{ padding: '80px 24px' }}>
+        <RevealSection style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '36px', marginBottom: '16px' }}>Open Source Activity</h2>
+          <p style={{ maxWidth: '600px', margin: '0 auto' }}>
+            A heatmap of my contributions and commits on GitHub.
+          </p>
+        </RevealSection>
+        
+        <RevealSection className="glass-panel" style={{ padding: '32px', display: 'flex', justifyContent: 'center', overflowX: 'auto', background: 'var(--card-bg-gradient)' }}>
+          <div style={{ minWidth: '780px' }}>
+            <GitHubCalendar 
+              username="sandeepbnvh" 
+              colorScheme={currentTheme}
+              theme={{
+                light: ['#f1f5f9', '#dbeafe', '#60a5fa', '#2563eb', '#1d4ed8'],
+                dark: ['#0f172a', '#1e3a8a', '#3b82f6', '#60a5fa', '#93c5fd']
+              }}
+              labels={{
+                totalCount: '{{count}} contributions in the last year',
+              }}
+            />
+          </div>
+        </RevealSection>
       </section>
 
       {/* Education Summary Section */}
@@ -892,6 +974,10 @@ export default function App() {
             <span>•</span>
             <a href="https://github.com/sandeepbnvh" target="_blank" rel="noreferrer" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--accent)' }}>
               GitHub
+            </a>
+            <span>•</span>
+            <a href="https://instagram.com/sandeep.a.n" target="_blank" rel="noreferrer" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--accent)' }}>
+              Instagram
             </a>
             <span>•</span>
             <a href="mailto:sandeep.bnvh@gmail.com" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--accent)' }}>
